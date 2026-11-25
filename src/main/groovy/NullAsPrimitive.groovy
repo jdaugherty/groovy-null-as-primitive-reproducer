@@ -28,7 +28,7 @@ class Static {
     static int castInt(Holder h) { (int) h.number }
 }
 
-String indy = "indy=${System.getProperty('groovy.target.indy', 'true')}"
+String indy = "indy=${args ? args[0] : 'true'}"
 Holder holder = new Holder()
 [dynamic: Dynamic, static: Static].each { String mode, Class<?> type ->
     [asBoolean    : 'null as boolean',

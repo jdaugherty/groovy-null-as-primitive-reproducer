@@ -27,11 +27,16 @@ moving from Groovy 4 to Groovy 5.
 
 ## Reproducer
 
-`NullAsPrimitive.groovy` has no dependencies. It evaluates each form in a dynamic and in a `@CompileStatic` class:
+`src/main/groovy/NullAsPrimitive.groovy` evaluates each form in a dynamic and in a `@CompileStatic` class. The Gradle
+build compiles and runs it with each Groovy version, once for invokedynamic and once for classic call sites, and
+resolves Groovy from Maven Central:
 
 ```
-$ ./run.sh 4.0.33 5.1.3 6.0.0
+$ ./gradlew -q reproduce
+$ ./gradlew -q reproduce -PgroovyVersions=4.0.33,5.1.3
 ```
+
+The default versions are 4.0.33, 5.1.3 and 6.0.0.
 
 | Expression, value is null | 4.0.33, indy | 4.0.33, classic | 5.x / 6.x / master, indy | 5.x / 6.x / master, classic |
 |---|---|---|---|---|
@@ -44,8 +49,8 @@ $ ./run.sh 4.0.33 5.1.3 6.0.0
 The dynamic and the `@CompileStatic` class give the same result for every `as` row. `x as int` failed before as well;
 what changed there is the exception, and the two modes never agreed on it.
 
-The jars are looked up in `~/.m2/repository` and the Gradle cache. Classic call sites on Groovy 6 and later need
-`groovy-callsite`; `GROOVY_JAR` and `GROOVY_CALLSITE_JAR` point the script at a build from source.
+A snapshot version is taken from the local Maven repository. Classic call sites on Groovy 6 and later need
+`groovy-callsite`, which the build adds.
 
 ## Cause
 
