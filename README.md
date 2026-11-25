@@ -1,6 +1,6 @@
 # `null as boolean` throws with classic call sites since Groovy 5
 
-Not reported yet.
+Reported as [GROOVY-12834](https://issues.apache.org/jira/browse/GROOVY-12834).
 
 Coercing a null value to `boolean` with the `as` operator,
 
